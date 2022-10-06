@@ -1,1 +1,8 @@
 *.exe
+/build
+/.vscode
+/src/abseil_demo
+/src/abseil_flags
+/src/lib
+/src/main
+/src/tests/tests.cpp
