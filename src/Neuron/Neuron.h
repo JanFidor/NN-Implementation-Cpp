@@ -6,16 +6,22 @@
 class Neuron {
     private:
         std::vector<int> weights;
-        double output, outputDerivative;
+        double output;      
+        double outputDerivative;
 
-        ActivationFunction& function;
+        const ActivationFunction& function;
     public:
         double totalDerivative;
-        Neuron(ActivationFunction& function, std::vector<int> weights);
+        
+        // makes incorporating an additional Neuron as a bias trivial
+        Neuron(const ActivationFunction&, std::vector<int>, double);
+
+        const std::vector<int>& getWeights() const;
         
         double getOutput() const;
         double getOutputDerivative() const;
 
-        void calculate(double input);
+        void calculate(double);
 
+        void adjustWeight(int, double);
 };
