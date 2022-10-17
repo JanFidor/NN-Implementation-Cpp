@@ -12,12 +12,9 @@ class Layer {
         const ActivationFunction& function;
         bool hasBiasNeuron;
 
-        Neuron createNeuron(const std::vector<double>&) const;
         double forwardPropagationForIndex(int) const;
 
         double calculateTotalDerivative(const Neuron&, const std::vector<double>&) const;
-
-        void adjustWeight(Neuron&, int, double);
     public: 
         Layer(const ActivationFunction&, const std::vector<std::vector<double>>&, bool=false);
 

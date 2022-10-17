@@ -10,19 +10,7 @@ Layer::Layer(
     size = neuronsWeights.size();
 
     for(std::vector<double> weights : neuronsWeights)
-        neurons.push_back(createNeuron(weights));
-}
-
-Neuron Layer::createNeuron(const std::vector<double>& weights) const{
-    return Neuron(function, weights, 1.0);     // neuron can be used as bias
-}
-
-std::vector<double> Layer::forwardPropagation() const{
-    int layerSize = neurons.front().getWeights().size();
-    std::vector<double> outputs;
-    for(int i = 0; i < layerSize; i++)
-        outputs.push_back(forwardPropagationForIndex(i));
-    return outputs;
+        neurons.push_back(Neuron(function, weights, 1.0));
 }
 
 double Layer::forwardPropagationForIndex(int index) const{
@@ -46,6 +34,15 @@ void Layer::updateTotalDerivatives(const std::vector<double>& derivatives){
         neuron.totalDerivative = calculateTotalDerivative(neuron, derivatives); 
 }
 
+double Layer::calculateTotalDerivative(const Neuron& neuron, const std::vector<double>& derivatives) const{
+    double sum = 0;
+    const std::vector<double> weights = neuron.getWeights();
+    for(int i = 0; i < derivatives.size(); i++)
+        sum += derivatives[i] * weights[i];
+    
+    return sum * neuron.getOutputDerivative(); 
+}
+
 void Layer::adjustWeights(const std::vector<double>& derivatives, double alpha){
     for(Neuron& neuron : neurons){
         for(int i = 0; i < neuron.getWeights().size(); i++){
@@ -56,19 +53,15 @@ void Layer::adjustWeights(const std::vector<double>& derivatives, double alpha){
     }
 }
 
-double Layer::calculateTotalDerivative(const Neuron& neuron, const std::vector<double>& derivatives) const{
-    double sum = 0;
-    const std::vector<double> weights = neuron.getWeights();
-    for(int i = 0; i < derivatives.size(); i++)
-        sum += derivatives[i] * weights[i];
-    
-    return sum * neuron.getOutputDerivative(); 
-}
-
 void Layer::calculateInputs(const std::vector<double>& inputs){
     for(int i = 0; i < inputs.size(); i++)
         neurons[i].calculate(inputs[i]);
 
+}
+
+
+int Layer::getSize() const{
+    return size;
 }
 
 std::vector<double> Layer::getOutputs() const{
@@ -89,6 +82,10 @@ std::vector<double> Layer::getTotalDerivatives() const{
     return derivatives;
 }
 
-int Layer::getSize() const{
-    return size;
+std::vector<double> Layer::forwardPropagation() const{
+    int layerSize = neurons.front().getWeights().size();
+    std::vector<double> outputs;
+    for(int i = 0; i < layerSize; i++)
+        outputs.push_back(forwardPropagationForIndex(i));
+    return outputs;
 }
