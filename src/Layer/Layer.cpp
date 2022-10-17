@@ -42,10 +42,10 @@ void Layer::updateTotalDerivatives(const std::vector<double>& derivatives){
 
 void Layer::adjustWeights(const std::vector<double>& derivatives, double alpha){
     for(Neuron& neuron : neurons){
-        for(int weightId = 0; weightId < neuron.getWeights().size(); weightId++){
-            double derivativeOverWeight = this->derivativeOverWeight(neuron, weightId);
-            double adjustedWeight = neuron.getWeights()[weightId] - derivativeOverWeight * alpha; // TODO
-            neuron.adjustWeight(weightId, adjustedWeight);
+        for(int i = 0; i < neuron.getWeights().size(); i++){
+            double derivativeOverWeight = neuron.getOutput() * derivatives[i];
+            double adjustedWeight = neuron.getWeights()[i] - derivativeOverWeight * alpha; // TODO
+            neuron.adjustWeight(i, adjustedWeight);
         }
     }
 }
@@ -54,7 +54,7 @@ double Layer::calculateTotalDerivative(const Neuron& neuron, const std::vector<d
     double sum = 0;
     const std::vector<double> weights = neuron.getWeights();
     for(int i = 0; i < neurons.size(); i++)
-        sum += weights[i] * neuron.totalDerivative;
+        sum += derivatives[i] * weights[i];
     
     return sum * neuron.getOutputDerivative(); 
 }
