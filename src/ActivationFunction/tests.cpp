@@ -1,9 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include "SigmoidFunction.cpp"
-
-bool aproximatelyEqual(double a, double b, double epsilon) {
-    return abs(a - b) < epsilon;
-}
+#include "../utils/utils.h"
 
 TEST_CASE("Sigmoid function correctly calculates output for 0"){
     SigmoidFunction f;

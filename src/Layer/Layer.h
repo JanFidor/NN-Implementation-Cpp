@@ -1,25 +1,35 @@
 #pragma once
 
 #include <vector>
-#include <memory>
 #include "../Neuron/Neuron.h"
 #include "../ActivationFunction/ActivationFunction.h"
 
 
 class Layer {
     private:
+        int size;
         std::vector<Neuron> neurons;
         const ActivationFunction& function;
 
-        Neuron createNeuron(const std::vector<int>&) const;
-    public: 
-        Layer(const ActivationFunction&, const std::vector<std::vector<int>>&);
-
+        Neuron createNeuron(const std::vector<double>&) const;
         double forwardPropagationForIndex(int) const;
-        double totalDerivativeOverNeuronsInput(const Neuron&) const;
+
+        double calculateTotalDerivative(const Neuron&, const std::vector<double>&) const;
+
+        void adjustWeight(Neuron&, int, double);
         double derivativeOverWeight(const Neuron&, int) const;
-        void adjustWeight(int, int, double);
+    public: 
+        Layer(const ActivationFunction&, const std::vector<std::vector<double>>&);
+
+        void setTotalDerivatives(const std::vector<double>&);        
+        void updateTotalDerivatives(const std::vector<double>&);
+        void adjustWeights(const std::vector<double>&, double);
 
         void calculateInputs(const std::vector<double>&);
+
+        int getSize() const;
         std::vector<double> getOutputs() const;
+        std::vector<double> getTotalDerivatives() const;
+
+        std::vector<double> forwardPropagation(int) const;
 };
