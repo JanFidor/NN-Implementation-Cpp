@@ -8,7 +8,6 @@ Net::Net(
     const std::pair<double, double> weightInitialRange,
     double alpha
 ) : generator(weightInitialRange.first, weightInitialRange.second), lossFunction(lossFunction), alpha(alpha){
-
     for(int i = 0; i < netStructure.size(); i++){
         LayerStructure currStructure = netStructure[i];
         const ActivationFunction& func = currStructure.getFunction();
@@ -38,28 +37,18 @@ Layer Net::generateLayer(
     int weightCountEach, 
     bool hasBiasNeuron
 ){
-    // std::vector<std::vector<double>> weights(structure.getSize());
-    // std::generate(weights.begin(), weights.end(), [this](int nextLayerSize) { 
-    //     return generateWeights(nextLayerSize); 
-    // });
-    std::vector<std::vector<double>> weights;
-    
-    for(int i = 0; i < size; i++)
-        weights.emplace_back(generateWeights(weightCountEach));   
-
+    std::vector<std::vector<double>> weights(size);
+    std::generate(weights.begin(), weights.end(), [&]() { 
+        return this->generateWeights(weightCountEach); 
+    });
     return Layer(function, weights, hasBiasNeuron);
 }
 
 std::vector<double> Net::generateWeights(int weightsCount){
-    // std::vector<std::vector<double>> weights(structure.getSize());
-    // std::generate(weights.begin(), weights.end(), [this](int nextLayerSize) { 
-    //     return generateWeights(nextLayerSize); 
-    // });
-    std::vector<double> weights;
-    
-    for(int i = 0; i < weightsCount; i++)
-        weights.emplace_back(generator.generate());   
-
+    std::vector<double> weights(weightsCount);
+    std::generate(weights.begin(), weights.end(), [&]() { 
+        return this->generator.generate(); 
+    });
     return weights;
 }
 
@@ -79,15 +68,8 @@ void Net::setInput(const std::vector<double>& inputs){
 void Net::calculateOutputDerivatives(const std::vector<double>& targets){
     Layer& outputLayer = layers.back();
     const std::vector<double>& outputs = outputLayer.getOutputs();
-    // std::vector<std::vector<double>> weights(structure.getSize());
-    // std::generate(weights.begin(), weights.end(), [this](int nextLayerSize) { 
-    //     return generateWeights(nextLayerSize); 
-    // });
-    
     std::vector<double> derivatives = lossFunction.calculateDerivatives(targets, outputs);
-
     outputLayer.setTotalDerivatives(derivatives);
-
 }
 
 void Net::propagateForward(){
