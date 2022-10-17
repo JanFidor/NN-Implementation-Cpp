@@ -13,7 +13,8 @@ Neuron Layer::createNeuron(const std::vector<double>& weights) const{
     return Neuron(function, weights, 1.0);     // neuron can be used as bias
 }
 
-std::vector<double> Layer::forwardPropagation(int layerSize) const{
+std::vector<double> Layer::forwardPropagation() const{
+    int layerSize = neurons.front().getWeights().size();
     std::vector<double> outputs;
     for(int i = 0; i < layerSize; i++)
         outputs.push_back(forwardPropagationForIndex(i));

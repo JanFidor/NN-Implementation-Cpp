@@ -84,7 +84,7 @@ void Net::propagateForward(){
         Layer currLayer = layers[i];
         Layer nextLayer = layers[i + 1];
         
-        std::vector<double> inputs = currLayer.forwardPropagation(nextLayer.getSize());
+        std::vector<double> inputs = currLayer.forwardPropagation();
         nextLayer.calculateInputs(inputs);
         
     }

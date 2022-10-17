@@ -31,5 +31,5 @@ class Layer {
         std::vector<double> getOutputs() const;
         std::vector<double> getTotalDerivatives() const;
 
-        std::vector<double> forwardPropagation(int) const;
+        std::vector<double> forwardPropagation() const;
 };
