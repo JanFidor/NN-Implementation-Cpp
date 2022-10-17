@@ -73,9 +73,7 @@ void Layer::calculateInputs(const std::vector<double>& inputs){
 
 std::vector<double> Layer::getOutputs() const{
     std::vector<double> outputs;
-    int d = neurons.size();
-    if(hasBiasNeuron)
-        d--;
+    int d = neurons.size() + (hasBiasNeuron ? -1 : 0);
 
     for(int i = 0; i < d; i++)
         outputs.emplace_back(neurons[i].getOutput());
@@ -84,9 +82,7 @@ std::vector<double> Layer::getOutputs() const{
 
 std::vector<double> Layer::getTotalDerivatives() const{
     std::vector<double> derivatives;
-    int d = neurons.size();
-    if(hasBiasNeuron)
-        d--;
+    int d = neurons.size() + (hasBiasNeuron ? -1 : 0);
 
     for(int i = 0; i < d; i++)
         derivatives.emplace_back(neurons[i].totalDerivative);

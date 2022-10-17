@@ -12,16 +12,12 @@ Net::Net(
     for(int i = 0; i < netStructure.size(); i++){
         LayerStructure currStructure = netStructure[i];
         const ActivationFunction& func = currStructure.getFunction();
+        bool isNotLast = i != netStructure.size() - 1;
 
-        int currStructureSize = currStructure.getSize();
-        int nextStructureSize = 0;
-
-        if(i != netStructure.size() - 1){
-            nextStructureSize = netStructure[i + 1].getSize();
-            currStructureSize++;
-        }
+        // add bias neuron if layer is not last
+        int currStructureSize = currStructure.getSize() + (isNotLast ? 1 : 0);
+        int nextStructureSize = isNotLast ? netStructure[i + 1].getSize() : 0;
             
-
         bool hasBiasNeuron = i != netStructure.size() - 1;
 
         Layer layer = generateLayer(
