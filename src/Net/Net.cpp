@@ -9,24 +9,39 @@ Net::Net(
     double alpha
 ) : generator(weightInitialRange.first, weightInitialRange.second), lossFunction(lossFunction), alpha(alpha){
 
-    for(int i = 0; i < netStructure.size() - 1; i++){
+    for(int i = 0; i < netStructure.size(); i++){
         LayerStructure currStructure = netStructure[i];
-        LayerStructure nextStructure = netStructure[i + 1];
+        const ActivationFunction& func = currStructure.getFunction();
 
-        Layer layer = generateLayer(currStructure.getFunction(), currStructure.getSize() + 1,nextStructure.getSize());
+        int currStructureSize = currStructure.getSize();
+        int nextStructureSize = 0;
+
+        if(i != netStructure.size() - 1){
+            nextStructureSize = netStructure[i + 1].getSize();
+            currStructureSize++;
+        }
+            
+
+        bool hasBiasNeuron = i != netStructure.size() - 1;
+
+        Layer layer = generateLayer(
+            func,
+            currStructureSize,
+            nextStructureSize, 
+            hasBiasNeuron
+        );
         layers.push_back(layer);
     }
-
-    LayerStructure outputStructure = netStructure.back();
-    Layer output = generateLayer(outputStructure.getFunction(), outputStructure.getSize(), 0);
-    layers.push_back(output);
-
-    int i;
 }
 
 
 // TODO not accounting for bias
-Layer Net::generateLayer(const ActivationFunction& function, int size, int weightCountEach){
+Layer Net::generateLayer(
+    const ActivationFunction& function, 
+    int size, 
+    int weightCountEach, 
+    bool hasBiasNeuron
+){
     // std::vector<std::vector<double>> weights(structure.getSize());
     // std::generate(weights.begin(), weights.end(), [this](int nextLayerSize) { 
     //     return generateWeights(nextLayerSize); 
@@ -36,7 +51,7 @@ Layer Net::generateLayer(const ActivationFunction& function, int size, int weigh
     for(int i = 0; i < size; i++)
         weights.emplace_back(generateWeights(weightCountEach));   
 
-    return Layer(function, weights);
+    return Layer(function, weights, hasBiasNeuron);
 }
 
 std::vector<double> Net::generateWeights(int weightsCount){
@@ -81,19 +96,18 @@ void Net::calculateOutputDerivatives(const std::vector<double>& targets){
 
 void Net::propagateForward(){
     for(int i = 0; i < layers.size() - 1; i++){
-        Layer currLayer = layers[i];
-        Layer nextLayer = layers[i + 1];
+        Layer& currLayer = layers[i];
+        Layer& nextLayer = layers[i + 1];
         
         std::vector<double> inputs = currLayer.forwardPropagation();
-        nextLayer.calculateInputs(inputs);
-        
+        nextLayer.calculateInputs(inputs);  
     }
 }
 
 void Net::propagateBackward(){
     int d = layers.size();
 
-    for(int i = d - 1; i > 1; i--){
+    for(int i = d - 1; i > 0; i--){
         Layer& curr = layers[i];
         Layer& prev = layers[i - 1];
 

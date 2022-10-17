@@ -18,7 +18,7 @@ class Net {
         RandomValueGenerator generator;
 
         std::vector<double> generateWeights(int);
-        Layer generateLayer(const ActivationFunction&, int, int);
+        Layer generateLayer(const ActivationFunction&, int, int, bool);
 
         void setInput(const std::vector<double>&);
 
