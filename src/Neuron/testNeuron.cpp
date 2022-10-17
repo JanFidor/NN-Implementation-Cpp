@@ -1,15 +1,16 @@
 #include <catch2/catch_test_macros.hpp>
 #include "Neuron.h"
 #include "../ActivationFunction/SigmoidFunction.cpp"
+#include "../ActivationFunction/Linear.cpp"
 #include "../utils/utils.h"
 
 
-TEST_CASE("Neuron calculates output and derivative corectly"){
+TEST_CASE("Neuron calculates output corectly"){
     const SigmoidFunction f;
     std::vector<double> weights;
     Neuron n(f, weights, 0.0);
     n.calculate(0);
-    bool condition = aproximatelyEqual(n.getOutput(), 0.5, 0.0001) && aproximatelyEqual(n.getOutputDerivative(), 0.0, 0.0001);
+    bool condition = aproximatelyEqual(n.getOutput(), 0.5, 0.0001);
     REQUIRE(condition);
 }
 
