@@ -1,7 +1,6 @@
 #include <random>
 
-#ifndef RECIPE_H
-#define RECIPE_H
+#pragma once
 
 class RandomValueGenerator {
     double range_start, range_end;
@@ -13,11 +12,7 @@ class RandomValueGenerator {
     std::uniform_real_distribution<double> distribution;
 
     public:
-        double value;
-        double derivative;
         RandomValueGenerator(double start, double end);
         
         double generate();
 };
-
-#endif
