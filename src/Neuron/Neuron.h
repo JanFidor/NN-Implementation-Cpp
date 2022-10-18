@@ -14,14 +14,14 @@ class Neuron {
         double totalDerivative;
         
         // makes incorporating an additional Neuron as a bias trivial
-        Neuron(const ActivationFunction&, std::vector<double>, double);
+        Neuron(const ActivationFunction& function, std::vector<double> weights, double output = 0);
 
         const std::vector<double>& getWeights() const;
         
         double getOutput() const;
         double getOutputDerivative() const;
 
-        void calculate(double);
+        void calculate(double input);
 
-        void adjustWeight(int, double);
+        void adjustWeight(int weightId, double newValue);
 };

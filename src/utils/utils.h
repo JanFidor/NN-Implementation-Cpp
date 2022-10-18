@@ -1,1 +1,1 @@
-bool aproximatelyEqual(double, double, double);
+bool aproximatelyEqual(double a, double b, double epsilon);

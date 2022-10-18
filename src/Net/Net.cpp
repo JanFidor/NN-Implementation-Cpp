@@ -50,15 +50,15 @@ std::vector<double> Net::generateWeights(int weightsCount){
     return weights;
 }
 
-void Net::propagate(const std::vector<double>& inputs, const std::vector<double>& targets){
-    setInput(inputs);
+void Net::propagate(const std::vector<double>& input, const std::vector<double>& targets){
+    setInput(input);
     propagateForward();
     calculateOutputDerivatives(targets);
     propagateBackward();
 }
 
-void Net::setInput(const std::vector<double>& inputs){
-    layers[0].calculateInputs(inputs);
+void Net::setInput(const std::vector<double>& input){
+    layers[0].calculateInputs(input);
 }
 
 void Net::calculateOutputDerivatives(const std::vector<double>& targets){
@@ -95,8 +95,8 @@ void Net::propagateBackwardForLayers(Layer& curr, Layer& prev){
     prev.adjustWeights(currDerivatives, alpha);
 }
 
-std::vector<double> Net::getOutputs(const std::vector<double>& inputs){
-    setInput(inputs);
+std::vector<double> Net::getOutputs(const std::vector<double>& input){
+    setInput(input);
     propagateForward();
     return layers.back().getOutputs();
 }

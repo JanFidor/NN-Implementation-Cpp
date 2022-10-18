@@ -4,7 +4,7 @@
 
 
 Neuron::Neuron(
-    const ActivationFunction& function, std::vector<double> weights, double output = 0
+    const ActivationFunction& function, std::vector<double> weights, double output
 ) : function(function), weights(weights), output(output){}
 
 const std::vector<double>& Neuron::getWeights() const{

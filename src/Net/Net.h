@@ -17,21 +17,31 @@ class Net {
         
         RandomValueGenerator generator;
 
-        std::vector<double> generateWeights(int);
-        Layer generateLayer(const ActivationFunction&, int, int, bool);
+        std::vector<double> generateWeights(int weightsCount);
 
-        void setInput(const std::vector<double>&);
+        Layer generateLayer(
+            const ActivationFunction& function, 
+            int size, 
+            int weightCountEach, 
+            bool hasBiasNeuron
+        );
+
+        void setInput(const std::vector<double>& input);
 
         void propagateForward();
-        void calculateOutputDerivatives(const std::vector<double>&);    // TODO
+        void calculateOutputDerivatives(const std::vector<double>& targets);
         void propagateBackward();
 
-        void propagateBackwardForLayers(Layer&, Layer&);
-        void updateLayerWeights(Layer&, const std::vector<double>);
+        void propagateBackwardForLayers(Layer& curr, Layer& prev);
     public:
-        Net(const LossFunction&, const std::vector<LayerStructure>&, const std::pair<double, double>, double);
-        void propagate(const std::vector<double>&, const std::vector<double>&);
+        Net(
+            const LossFunction& lossFunction, 
+            const std::vector<LayerStructure>& netStructure, 
+            const std::pair<double, double> weightInitialRange,
+            double alpha
+        );
+        void propagate(const std::vector<double>& input, const std::vector<double>& targets);
 
         double getTotalError() const;
-        std::vector<double> getOutputs(const std::vector<double>&);
+        std::vector<double> getOutputs(const std::vector<double>& input);
 };

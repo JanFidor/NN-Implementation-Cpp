@@ -7,7 +7,7 @@ class LayerStructure{
         int size;
         const ActivationFunction& function;
     public:
-        LayerStructure(int, const ActivationFunction&);
+        LayerStructure(int size, const ActivationFunction& function);
 
         int getSize() const;
         const ActivationFunction& getFunction() const;

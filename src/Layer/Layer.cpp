@@ -46,7 +46,7 @@ void Layer::adjustWeights(const std::vector<double>& derivatives, double alpha){
     for(Neuron& neuron : neurons){
         for(int i = 0; i < neuron.getWeights().size(); i++){
             double derivativeOverWeight = neuron.getOutput() * derivatives[i];
-            double adjustedWeight = neuron.getWeights()[i] - derivativeOverWeight * alpha; // TODO
+            double adjustedWeight = neuron.getWeights()[i] - derivativeOverWeight * alpha;
             neuron.adjustWeight(i, adjustedWeight);
         }
     }
