@@ -17,12 +17,11 @@ double Layer::forwardPropagationForIndex(int index) const{
     double sum = 0;
 
     for(const Neuron& neuron : neurons)
-        sum += neuron.getOutput() * neuron.getWeights()[index];     // TODO 1 method for all weights vs additional for a single weight
+        sum += neuron.getOutput() * neuron.getWeights()[index];
     
     return sum;
 }
 
-// TODO add setter for output layer
 void Layer::setTotalDerivatives(const std::vector<double>& derivatives){
     for(int i = 0; i < derivatives.size(); i++)
         neurons[i].totalDerivative = derivatives[i];
@@ -56,7 +55,6 @@ void Layer::adjustWeights(const std::vector<double>& derivatives, double alpha){
 void Layer::calculateInputs(const std::vector<double>& inputs){
     for(int i = 0; i < inputs.size(); i++)
         neurons[i].calculate(inputs[i]);
-
 }
 
 

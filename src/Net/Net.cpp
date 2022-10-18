@@ -29,8 +29,6 @@ Net::Net(
     }
 }
 
-
-// TODO not accounting for bias
 Layer Net::generateLayer(
     const ActivationFunction& function, 
     int size, 
@@ -51,8 +49,6 @@ std::vector<double> Net::generateWeights(int weightsCount){
     });
     return weights;
 }
-
-
 
 void Net::propagate(const std::vector<double>& inputs, const std::vector<double>& targets){
     setInput(inputs);
